@@ -1,6 +1,8 @@
+#!/usr/bin/env python
+
+
 from pysnmp.hlapi import *
-import re
-import sys, getopt
+import re import sys, getopt
 from array import *
 import time
 from multiprocessing import Pool
