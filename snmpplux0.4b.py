@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 
 
+import re
+import sys, getopt
 from pysnmp.hlapi import *
-import re import sys, getopt
-from array import *
 import time
+from array import *
 from multiprocessing import Pool
 
 def banner():
