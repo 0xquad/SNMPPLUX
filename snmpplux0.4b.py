@@ -29,11 +29,11 @@ def opts(argv):
     try:
         opts, args = getopt.getopt(argv, 'i:u:p:h', ['ifile=', 'ufile=','pfile=','help'])
     except getopt.GetoptError:
-        print ('test.py -i <inputfile> -u <userfile> -p <passfile> ')
+        print ('usage: test.py -i <inputfile> -u <userfile> -p <passfile> ')
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print ('test.py -i <inputfile> -u <userfile> -p <passfile> ')
+            print ('usage: test.py -i <inputfile> -u <userfile> -p <passfile> ')
             sys.exit()
         elif opt in ('-i', '--ifile'):
             inputfile = arg
@@ -41,6 +41,9 @@ def opts(argv):
             userfile = arg
         elif opt in ('-p', '--pfile'):
             passfile = arg
+
+    if not inputfile or not userfile or not passfile:
+        raise RuntimeError('usage: test.py -i <inputfile> -u <userfile> -p <passfile>')
 
     return inputfile, userfile, passfile
 
