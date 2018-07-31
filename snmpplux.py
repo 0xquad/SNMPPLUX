@@ -218,7 +218,7 @@ if __name__ == "__main__":
             for line in ins:
                     line = line.replace("\n", "")
                     targs.append(line)
-            
+
     with open(userfile, "r") as ins:
             users= []
             for line in ins:
