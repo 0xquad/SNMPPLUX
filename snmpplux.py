@@ -43,7 +43,7 @@ def opts(argv):
         elif opt in ('-p', '--pfile'):
             passfile = arg
         elif opt in ('-c', '--cfile'):
-            passfile = arg
+            commfile = arg
 
     if not inputfile or not userfile or not passfile or not commfile:
         raise RuntimeError('usage: test.py -i <inputfile> -u <userfile> -p <passfile> -c <communityfile>')
