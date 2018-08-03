@@ -26,14 +26,15 @@ def opts(argv):
     inputfile = ''
     userfile = ''
     passfile = ''
+    commfile = ''
     try:
-        opts, args = getopt.getopt(argv, 'i:u:p:h', ['ifile=', 'ufile=','pfile=','help'])
+        opts, args = getopt.getopt(argv, 'i:u:p:c:h', ['ifile=', 'ufile=','pfile=','cfile=','help'])
     except getopt.GetoptError:
-        print ('usage: test.py -i <inputfile> -u <userfile> -p <passfile> ')
+        print ('usage: test.py -i <inputfile> -u <userfile> -p <passfile> -c <communityfile>')
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print ('usage: test.py -i <inputfile> -u <userfile> -p <passfile> ')
+            print ('usage: test.py -i <inputfile> -u <userfile> -p <passfile> -c <communityfile>')
             sys.exit()
         elif opt in ('-i', '--ifile'):
             inputfile = arg
@@ -41,11 +42,13 @@ def opts(argv):
             userfile = arg
         elif opt in ('-p', '--pfile'):
             passfile = arg
+        elif opt in ('-c', '--cfile'):
+            passfile = arg
 
-    if not inputfile or not userfile or not passfile:
-        raise RuntimeError('usage: test.py -i <inputfile> -u <userfile> -p <passfile>')
+    if not inputfile or not userfile or not passfile or not commfile:
+        raise RuntimeError('usage: test.py -i <inputfile> -u <userfile> -p <passfile> -c <communityfile>')
 
-    return inputfile, userfile, passfile
+    return inputfile, userfile, passfile, commfile
 
 
 
@@ -221,7 +224,7 @@ def snmp3shaaes_helper(args):
 
 if __name__ == "__main__":
     banner()
-    inputfile, userfile, passfile = opts(sys.argv[1:])
+    inputfile, userfile, passfile, commfile = opts(sys.argv[1:])
 
     with open(inputfile, "r") as ins:
             targs = []
@@ -242,7 +245,7 @@ if __name__ == "__main__":
                 line = line.replace("\n", "")
                 passwords.append(line)
 
-    with open("dict.txt", "r") as ins:
+    with open(commfile, "r") as ins:
         communities = []
         for line in ins:
             line = line.replace("\n", "")
