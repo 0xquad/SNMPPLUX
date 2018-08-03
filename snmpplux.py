@@ -50,39 +50,43 @@ def opts(argv):
 
 
 def snmp1dict(ip, comm):
+        print('1', end=None)
         errorIndication, errorStatus, errorIndex, varBinds = next(getCmd(SnmpEngine(),CommunityData(comm, mpModel=0),UdpTransportTarget((ip, 161)),ContextData(),ObjectType(ObjectIdentity('1.3.6.1.2.1.1.1.0'))))
         if errorIndication:
                 pass
         elif errorStatus:
             pass
         else:
-            print ("SNMPv1: %s: Community:%s" %(ip,comm))
+            print ("\nSNMPv1: %s: Community:%s" %(ip,comm))
 
 
 
 def snmp2dict(ip, comm):
+        print('2', end=None)
         errorIndication, errorStatus, errorIndex, varBinds = next(getCmd(SnmpEngine(),CommunityData(comm),UdpTransportTarget((ip, 161)),ContextData(),ObjectType(ObjectIdentity('1.3.6.1.2.1.1.1.0'))))
         if errorIndication:
                 pass
         elif errorStatus:
             pass
         else:
-            print ("SNMPv2: %s: Community:%s" %(ip,comm))
+            print ("\nSNMPv2: %s: Community:%s" %(ip,comm))
          
 
 
 def snmp3_authNone_privNone(ip, user):
+        print('3', end=None)
         errorIndication, errorStatus, errorIndex, varBinds = next(getCmd(SnmpEngine(),UsmUserData(user),UdpTransportTarget((ip, 161)),ContextData(),ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0))))
         if errorIndication:
                 pass
         elif errorStatus:
                 pass
         else:
-                print ("SNMPv3 Auth None Priv None: %s: %s - no pass required\n" %(ip, user))
+                print ("\nSNMPv3 Auth None Priv None: %s: %s - no pass required\n" %(ip, user))
 
 
 
 def snmp3_authMD5_privNone(ip, user, passwd):
+    print('5', end=None)
     user = user.strip()
     passwd = passwd.strip()
     try:
@@ -92,12 +96,13 @@ def snmp3_authMD5_privNone(ip, user, passwd):
         elif errorStatus:
             pass
         else:
-            print ("SNMPv3 Auth MD5 Priv None: %s: %s:%s" % (ip, user, passwd))
+            print ("\nSNMPv3 Auth MD5 Priv None: %s: %s:%s" % (ip, user, passwd))
     except:
         print ('exception caused by: %s:%s' % (user,passwd))
         pass
 
 def snmp3_authMD5_privDES(ip, user, passwd):
+    print('D', end=None)
     user = user.strip()
     passwd = passwd.strip()
     try:
@@ -108,12 +113,13 @@ def snmp3_authMD5_privDES(ip, user, passwd):
             pass
         else:
             sys.stdout.flush()
-            print ("SNMPv3 Auth MD5 Priv DES: %s: %s:%s" % (ip,user,passwd))
+            print ("\nSNMPv3 Auth MD5 Priv DES: %s: %s:%s" % (ip,user,passwd))
     except:
         print ('exception caused by: %s:%s' % (user,passwd))
         pass
 
 def snmp3_authSHA_privAES128(ip,user,passwd):
+    print('8', end=None)
     user = user.strip()
     passwd = passwd.strip()
     try:
@@ -123,13 +129,14 @@ def snmp3_authSHA_privAES128(ip,user,passwd):
         elif errorStatus:
             pass
         else:
-            print ("SNMPv3 Auth SHA Priv AES128: %s:%s:auth:usmHMACSHAAuthProtocol:priv:usmAesCfb128Protocol" % (user,passwd))
+            print ("\nSNMPv3 Auth SHA Priv AES128: %s:%s:auth:usmHMACSHAAuthProtocol:priv:usmAesCfb128Protocol" % (user,passwd))
     except:
         print ('exception caused by: %s:%s:usmHMACSHAAuthProtocol:usmAesCfb128Protocol' % (user,passwd))
         pass
 
 
 def snmp3_authSHA_privAES192(ip,user,passwd):
+    print('9', end=None)
     user = user.strip()
     passwd = passwd.strip()
     try:
@@ -140,13 +147,14 @@ def snmp3_authSHA_privAES192(ip,user,passwd):
         elif errorStatus:
             pass
         else:
-            print ("SNMPv3 Auth SHA Priv AES192: %s:%s:auth:usmHMACSHAAuthProtocol:priv:usmAesCfb192Protocol" % (user,passwd))
+            print ("\nSNMPv3 Auth SHA Priv AES192: %s:%s:auth:usmHMACSHAAuthProtocol:priv:usmAesCfb192Protocol" % (user,passwd))
     except:
         print ('exception caused by: %s:%s:usmHMACSHAAuthProtocol:usmAesCfb192Protocol' % (user,passwd))
         pass
 
 
 def snmp3_authSHA_privAES256(ip,user,passwd):
+    print('6', end=None)
     user = user.strip()
     passwd = passwd.strip()
     try:
@@ -157,13 +165,14 @@ def snmp3_authSHA_privAES256(ip,user,passwd):
         elif errorStatus:
             pass
         else:
-            print ("SNMPv3 Auth SHA Priv AES256: %s:%s:auth:usmHMACSHAAuthProtocol:priv:usmAesCfb256Protocol" % (user,passwd))
+            print ("\nSNMPv3 Auth SHA Priv AES256: %s:%s:auth:usmHMACSHAAuthProtocol:priv:usmAesCfb256Protocol" % (user,passwd))
     except:
         print ('exception caused by: %s:%s:usmHMACSHAAuthProtocol:usmAesCfb256Protocol' % (user,passwd))
         pass
 
 
 def snmp3_authSHA_privDES(ip,user,passwd):
+    print('s', end=None)
     user = user.strip()
     passwd = passwd.strip()
     try:
@@ -174,12 +183,13 @@ def snmp3_authSHA_privDES(ip,user,passwd):
         elif errorStatus:
             pass
         else:
-            print ("SNMPv3 Auth SHA Priv DES: %s:%s:auth:usmHMACSHAAuthProtocol:priv:usmDESPrivProtocol" % (user,passwd))
+            print ("\nSNMPv3 Auth SHA Priv DES: %s:%s:auth:usmHMACSHAAuthProtocol:priv:usmDESPrivProtocol" % (user,passwd))
     except:
         print ('exception caused by: %s:%s:usmHMACSHAAuthProtocol:usmDESPrivProtocol' % (user,passwd))
         pass
 
 def snmp3_authSHA_priv3DES(ip,user,passwd):
+    print('S', end=None)
     user = user.strip()
     passwd = passwd.strip()
     try:
@@ -190,7 +200,7 @@ def snmp3_authSHA_priv3DES(ip,user,passwd):
         elif errorStatus:
             pass
         else:
-            print ("SNMPv3 Auth SHA Priv 3DES: %s:%s:auth:usmHMACSHAAuthProtocol:priv:usm3DESEDEPrivProtocol" % (user,passwd))
+            print ("\nSNMPv3 Auth SHA Priv 3DES: %s:%s:auth:usmHMACSHAAuthProtocol:priv:usm3DESEDEPrivProtocol" % (user,passwd))
     except:
         print ('exception caused by: %s:%s:usmHMACSHAAuthProtocol:usm3DESEDEPrivProtocol' % (user,passwd))
         pass
