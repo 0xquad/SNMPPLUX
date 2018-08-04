@@ -85,7 +85,7 @@ def snmp2dict(ip, comm):
             pass
         else:
             print ("\nSNMPv2: %s: Community:%s" %(ip,comm))
-         
+
 
 
 def snmp3_authNone_privNone(ip, user):
@@ -128,6 +128,8 @@ def snmp3_authMD5_privNone(ip, user, passwd):
         print ('exception caused by: %s:%s' % (user,passwd))
         pass
 
+
+
 def snmp3_authMD5_privDES(ip, user, passwd):
     print('D', end='', flush=True)
     user = user.strip()
@@ -150,6 +152,8 @@ def snmp3_authMD5_privDES(ip, user, passwd):
     except:
         print ('exception caused by: %s:%s' % (user,passwd))
         pass
+
+
 
 def snmp3_authSHA_privAES128(ip,user,passwd):
     print('8', end='', flush=True)
@@ -200,6 +204,7 @@ def snmp3_authSHA_privAES192(ip,user,passwd):
         pass
 
 
+
 def snmp3_authSHA_privAES256(ip,user,passwd):
     print('6', end='', flush=True)
     user = user.strip()
@@ -223,6 +228,7 @@ def snmp3_authSHA_privAES256(ip,user,passwd):
     except:
         print ('exception caused by: %s:%s:usmHMACSHAAuthProtocol:usmAesCfb256Protocol' % (user,passwd))
         pass
+
 
 
 def snmp3_authSHA_privDES(ip,user,passwd):
@@ -249,6 +255,8 @@ def snmp3_authSHA_privDES(ip,user,passwd):
         print ('exception caused by: %s:%s:usmHMACSHAAuthProtocol:usmDESPrivProtocol' % (user,passwd))
         pass
 
+
+
 def snmp3_authSHA_priv3DES(ip,user,passwd):
     print('S', end='', flush=True)
     user = user.strip()
@@ -273,6 +281,8 @@ def snmp3_authSHA_priv3DES(ip,user,passwd):
         print ('exception caused by: %s:%s:usmHMACSHAAuthProtocol:usm3DESEDEPrivProtocol' % (user,passwd))
         pass
 
+
+
 def snmp12_helper(args):
     return snmp1dict(*args), snmp2dict(*args)
 
@@ -283,7 +293,11 @@ def snmp3md5none_helper(args):
     return snmp3_authMD5_privNone(*args), snmp3_authMD5_privDES(*args)
 
 def snmp3shaaes_helper(args):
-    return snmp3_authSHA_privAES128(*args), snmp3_authSHA_privAES192(*args), snmp3_authSHA_privAES256(*args), snmp3_authSHA_privDES(*args), snmp3_authSHA_priv3DES(*args)
+    return (snmp3_authSHA_privAES128(*args),
+            snmp3_authSHA_privAES192(*args),
+            snmp3_authSHA_privAES256(*args),
+            snmp3_authSHA_privDES(*args),
+            snmp3_authSHA_priv3DES(*args))
 
 
 
