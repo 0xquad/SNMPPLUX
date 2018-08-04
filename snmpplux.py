@@ -54,7 +54,13 @@ def opts(argv):
 
 def snmp1dict(ip, comm):
         print('1', end='', flush=True)
-        errorIndication, errorStatus, errorIndex, varBinds = next(getCmd(SnmpEngine(),CommunityData(comm, mpModel=0),UdpTransportTarget((ip, 161)),ContextData(),ObjectType(ObjectIdentity('1.3.6.1.2.1.1.1.0'))))
+        errorIndication, errorStatus, errorIndex, varBinds = \
+            next(getCmd(SnmpEngine(),
+                        CommunityData(comm, mpModel=0),
+                        UdpTransportTarget((ip, 161)),
+                        ContextData(),
+                        ObjectType(ObjectIdentity('1.3.6.1.2.1.1.1.0'))
+            ))
         if errorIndication:
                 pass
         elif errorStatus:
@@ -66,7 +72,13 @@ def snmp1dict(ip, comm):
 
 def snmp2dict(ip, comm):
         print('2', end='', flush=True)
-        errorIndication, errorStatus, errorIndex, varBinds = next(getCmd(SnmpEngine(),CommunityData(comm),UdpTransportTarget((ip, 161)),ContextData(),ObjectType(ObjectIdentity('1.3.6.1.2.1.1.1.0'))))
+        errorIndication, errorStatus, errorIndex, varBinds = \
+            next(getCmd(SnmpEngine(),
+                        CommunityData(comm),
+                        UdpTransportTarget((ip, 161)),
+                        ContextData(),
+                        ObjectType(ObjectIdentity('1.3.6.1.2.1.1.1.0'))
+            ))
         if errorIndication:
                 pass
         elif errorStatus:
@@ -78,7 +90,13 @@ def snmp2dict(ip, comm):
 
 def snmp3_authNone_privNone(ip, user):
         print('3', end='', flush=True)
-        errorIndication, errorStatus, errorIndex, varBinds = next(getCmd(SnmpEngine(),UsmUserData(user),UdpTransportTarget((ip, 161)),ContextData(),ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0))))
+        errorIndication, errorStatus, errorIndex, varBinds = \
+            next(getCmd(SnmpEngine(),
+                        UsmUserData(user),
+                        UdpTransportTarget((ip, 161)),
+                        ContextData(),
+                        ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0))
+            ))
         if errorIndication:
                 pass
         elif errorStatus:
@@ -93,7 +111,13 @@ def snmp3_authMD5_privNone(ip, user, passwd):
     user = user.strip()
     passwd = passwd.strip()
     try:
-        errorIndication, errorStatus, errorIndex, varBinds = next(getCmd(SnmpEngine(),UsmUserData(user, passwd),UdpTransportTarget((ip, 161)),ContextData(),ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0))))
+        errorIndication, errorStatus, errorIndex, varBinds = \
+            next(getCmd(SnmpEngine(),
+                        UsmUserData(user, passwd),
+                        UdpTransportTarget((ip, 161)),
+                        ContextData(),
+                        ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0))
+            ))
         if errorIndication:
             pass
         elif errorStatus:
@@ -109,7 +133,13 @@ def snmp3_authMD5_privDES(ip, user, passwd):
     user = user.strip()
     passwd = passwd.strip()
     try:
-        errorIndication, errorStatus, errorIndex, varBinds = next(getCmd(SnmpEngine(),UsmUserData(user, passwd, passwd),UdpTransportTarget((ip, 161)),ContextData(),ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0))))
+        errorIndication, errorStatus, errorIndex, varBinds = \
+            next(getCmd(SnmpEngine(),
+                        UsmUserData(user, passwd, passwd),
+                        UdpTransportTarget((ip, 161)),
+                        ContextData(),
+                        ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0))
+            ))
         if errorIndication:
             pass
         elif errorStatus:
@@ -126,7 +156,14 @@ def snmp3_authSHA_privAES128(ip,user,passwd):
     user = user.strip()
     passwd = passwd.strip()
     try:
-        errorIndication, errorStatus, errorIndex, varBinds = next(getCmd(SnmpEngine(),UsmUserData(user, passwd, passwd, authProtocol=usmHMACSHAAuthProtocol, privProtocol=usmAesCfb128Protocol), UdpTransportTarget((ip, 161)),ContextData(),ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0))))
+        errorIndication, errorStatus, errorIndex, varBinds = \
+            next(getCmd(SnmpEngine(),
+                        UsmUserData(user, passwd, passwd, authProtocol=usmHMACSHAAuthProtocol,
+                                                          privProtocol=usmAesCfb128Protocol),
+                        UdpTransportTarget((ip, 161)),
+                        ContextData(),
+                        ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0))
+            ))
         if errorIndication:
             pass
         elif errorStatus:
@@ -143,7 +180,14 @@ def snmp3_authSHA_privAES192(ip,user,passwd):
     user = user.strip()
     passwd = passwd.strip()
     try:
-        errorIndication, errorStatus, errorIndex, varBinds = next(getCmd(SnmpEngine(),UsmUserData(user, passwd, passwd, authProtocol=usmHMACSHAAuthProtocol, privProtocol=usmAesCfb192Protocol), UdpTransportTarget((ip, 161)),ContextData(),ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0))))
+        errorIndication, errorStatus, errorIndex, varBinds = \
+            next(getCmd(SnmpEngine(),
+                        UsmUserData(user, passwd, passwd, authProtocol=usmHMACSHAAuthProtocol,
+                                                          privProtocol=usmAesCfb192Protocol),
+                        UdpTransportTarget((ip, 161)),
+                        ContextData(),
+                        ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0))
+            ))
 
         if errorIndication:
             pass
@@ -161,7 +205,14 @@ def snmp3_authSHA_privAES256(ip,user,passwd):
     user = user.strip()
     passwd = passwd.strip()
     try:
-        errorIndication, errorStatus, errorIndex, varBinds = next(getCmd(SnmpEngine(),UsmUserData(user, passwd, passwd, authProtocol=usmHMACSHAAuthProtocol, privProtocol=usmAesCfb256Protocol), UdpTransportTarget((ip, 161)),ContextData(),ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0))))
+        errorIndication, errorStatus, errorIndex, varBinds = \
+            next(getCmd(SnmpEngine(),
+                        UsmUserData(user, passwd, passwd, authProtocol=usmHMACSHAAuthProtocol,
+                                                          privProtocol=usmAesCfb256Protocol),
+                        UdpTransportTarget((ip, 161)),
+                        ContextData(),
+                        ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0))
+            ))
 
         if errorIndication:
             pass
@@ -179,7 +230,14 @@ def snmp3_authSHA_privDES(ip,user,passwd):
     user = user.strip()
     passwd = passwd.strip()
     try:
-        errorIndication, errorStatus, errorIndex, varBinds = next(getCmd(SnmpEngine(),UsmUserData(user, passwd, passwd, authProtocol=usmHMACSHAAuthProtocol, privProtocol=usmDESPrivProtocol), UdpTransportTarget((ip, 161)),ContextData(),ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0))))
+        errorIndication, errorStatus, errorIndex, varBinds = \
+            next(getCmd(SnmpEngine(),
+                        UsmUserData(user, passwd, passwd, authProtocol=usmHMACSHAAuthProtocol,
+                                                          privProtocol=usmDESPrivProtocol),
+                        UdpTransportTarget((ip, 161)),
+                        ContextData(),
+                        ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0))
+            ))
 
         if errorIndication:
             pass
@@ -196,7 +254,14 @@ def snmp3_authSHA_priv3DES(ip,user,passwd):
     user = user.strip()
     passwd = passwd.strip()
     try:
-        errorIndication, errorStatus, errorIndex, varBinds = next(getCmd(SnmpEngine(),UsmUserData(user, passwd, passwd, authProtocol=usmHMACSHAAuthProtocol, privProtocol=usm3DESEDEPrivProtocol), UdpTransportTarget((ip, 161)),ContextData(),ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0))))
+        errorIndication, errorStatus, errorIndex, varBinds = \
+            next(getCmd(SnmpEngine(),
+                        UsmUserData(user, passwd, passwd, authProtocol=usmHMACSHAAuthProtocol,
+                                                          privProtocol=usm3DESEDEPrivProtocol),
+                        UdpTransportTarget((ip, 161)),
+                        ContextData(),
+                        ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0))
+            ))
 
         if errorIndication:
             pass
@@ -227,16 +292,16 @@ if __name__ == "__main__":
     inputfile, userfile, passfile, commfile = opts(sys.argv[1:])
 
     with open(inputfile, "r") as ins:
-            targs = []
-            for line in ins:
-                    line = line.replace("\n", "")
-                    targs.append(line)
+        targs = []
+        for line in ins:
+            line = line.replace("\n", "")
+            targs.append(line)
 
     with open(userfile, "r") as ins:
-            users= []
-            for line in ins:
-                    line = line.replace("\n", "")
-                    users.append(line)
+        users= []
+        for line in ins:
+            line = line.replace("\n", "")
+            users.append(line)
 
     with open(passfile, "r") as ins:
         passwords = []
