@@ -30,15 +30,19 @@ def opts(argv):
     passfile = ''
     commfile = ''
 
+    def usage():
+        print ('usage: test.py -i <inputfile> -u <userfile> -p <passfile> -c <communityfile>')
+
+
     try:
         opts, args = getopt.getopt(argv, 'i:u:p:c:h', ['ifile=', 'ufile=','pfile=','cfile=','help'])
     except getopt.GetoptError:
-        print ('usage: test.py -i <inputfile> -u <userfile> -p <passfile> -c <communityfile>')
-        sys.exit(2)
+        usage()
+        raise SystemExit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print ('usage: test.py -i <inputfile> -u <userfile> -p <passfile> -c <communityfile>')
-            sys.exit()
+            usage()
+            raise SystemExit
         elif opt in ('-i', '--ifile'):
             inputfile = arg
         elif opt in ('-u', '--ufile'):
@@ -49,7 +53,8 @@ def opts(argv):
             commfile = arg
 
     if not inputfile or not userfile or not passfile or not commfile:
-        raise RuntimeError('usage: test.py -i <inputfile> -u <userfile> -p <passfile> -c <communityfile>')
+        usage()
+        raise SystemExit(1)
 
     return inputfile, userfile, passfile, commfile
 
