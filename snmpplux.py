@@ -53,7 +53,7 @@ def opts(argv):
 
 
 def snmp1dict(ip, comm):
-        print('1', end=None)
+        print('1', end='', flush=True)
         errorIndication, errorStatus, errorIndex, varBinds = next(getCmd(SnmpEngine(),CommunityData(comm, mpModel=0),UdpTransportTarget((ip, 161)),ContextData(),ObjectType(ObjectIdentity('1.3.6.1.2.1.1.1.0'))))
         if errorIndication:
                 pass
@@ -65,7 +65,7 @@ def snmp1dict(ip, comm):
 
 
 def snmp2dict(ip, comm):
-        print('2', end=None)
+        print('2', end='', flush=True)
         errorIndication, errorStatus, errorIndex, varBinds = next(getCmd(SnmpEngine(),CommunityData(comm),UdpTransportTarget((ip, 161)),ContextData(),ObjectType(ObjectIdentity('1.3.6.1.2.1.1.1.0'))))
         if errorIndication:
                 pass
@@ -77,7 +77,7 @@ def snmp2dict(ip, comm):
 
 
 def snmp3_authNone_privNone(ip, user):
-        print('3', end=None)
+        print('3', end='', flush=True)
         errorIndication, errorStatus, errorIndex, varBinds = next(getCmd(SnmpEngine(),UsmUserData(user),UdpTransportTarget((ip, 161)),ContextData(),ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0))))
         if errorIndication:
                 pass
@@ -89,7 +89,7 @@ def snmp3_authNone_privNone(ip, user):
 
 
 def snmp3_authMD5_privNone(ip, user, passwd):
-    print('5', end=None)
+    print('5', end='', flush=True)
     user = user.strip()
     passwd = passwd.strip()
     try:
@@ -105,7 +105,7 @@ def snmp3_authMD5_privNone(ip, user, passwd):
         pass
 
 def snmp3_authMD5_privDES(ip, user, passwd):
-    print('D', end=None)
+    print('D', end='', flush=True)
     user = user.strip()
     passwd = passwd.strip()
     try:
@@ -122,7 +122,7 @@ def snmp3_authMD5_privDES(ip, user, passwd):
         pass
 
 def snmp3_authSHA_privAES128(ip,user,passwd):
-    print('8', end=None)
+    print('8', end='', flush=True)
     user = user.strip()
     passwd = passwd.strip()
     try:
@@ -139,7 +139,7 @@ def snmp3_authSHA_privAES128(ip,user,passwd):
 
 
 def snmp3_authSHA_privAES192(ip,user,passwd):
-    print('9', end=None)
+    print('9', end='', flush=True)
     user = user.strip()
     passwd = passwd.strip()
     try:
@@ -157,7 +157,7 @@ def snmp3_authSHA_privAES192(ip,user,passwd):
 
 
 def snmp3_authSHA_privAES256(ip,user,passwd):
-    print('6', end=None)
+    print('6', end='', flush=True)
     user = user.strip()
     passwd = passwd.strip()
     try:
@@ -175,7 +175,7 @@ def snmp3_authSHA_privAES256(ip,user,passwd):
 
 
 def snmp3_authSHA_privDES(ip,user,passwd):
-    print('s', end=None)
+    print('s', end='', flush=True)
     user = user.strip()
     passwd = passwd.strip()
     try:
@@ -192,7 +192,7 @@ def snmp3_authSHA_privDES(ip,user,passwd):
         pass
 
 def snmp3_authSHA_priv3DES(ip,user,passwd):
-    print('S', end=None)
+    print('S', end='', flush=True)
     user = user.strip()
     passwd = passwd.strip()
     try:
