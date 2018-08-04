@@ -327,12 +327,12 @@ if __name__ == "__main__":
     p = Pool(20)
 
     if 1 in modes or 2 in modes:
-        job1_args = [(ip, comm) for comm in communities for ip in targs]
+        job1_args = [(ip, comm) for comm in communities for ip in targets]
         p.map(snmp12_helper, job1_args)
     if 3 in modes:
-        job2_args = [(ip, user) for user in users for ip in targs]
+        job2_args = [(ip, user) for user in users for ip in targets]
         p.map(snmp3none_helper, job1_args)
-        job3_args = [(ip, user, passwd) for ip in targs for user in users for passwd in passwords]
+        job3_args = [(ip, user, passwd) for ip in targets for user in users for passwd in passwords]
         p.map(snmp3md5none_helper, job3_args)
-        job4_args = [(ip, user, passwd) for ip in targs for user in users for passwd in passwords]
+        job4_args = [(ip, user, passwd) for ip in targets for user in users for passwd in passwords]
         p.map(snmp3shaaes_helper, job4_args)
