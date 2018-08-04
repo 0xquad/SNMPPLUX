@@ -129,7 +129,6 @@ def snmp3_authMD5_privNone(ip, user, passwd):
             print ("\nSNMPv3 Auth MD5 Priv None: %s: %s:%s" % (ip, user, passwd))
     except:
         print ('exception caused by: %s:%s' % (user,passwd))
-        pass
 
 
 
@@ -150,11 +149,9 @@ def snmp3_authMD5_privDES(ip, user, passwd):
         elif errorStatus:
             pass
         else:
-            sys.stdout.flush()
             print ("\nSNMPv3 Auth MD5 Priv DES: %s: %s:%s" % (ip,user,passwd))
     except:
         print ('exception caused by: %s:%s' % (user,passwd))
-        pass
 
 
 
@@ -179,7 +176,6 @@ def snmp3_authSHA_privAES128(ip,user,passwd):
             print ("\nSNMPv3 Auth SHA Priv AES128: %s:%s:auth:usmHMACSHAAuthProtocol:priv:usmAesCfb128Protocol" % (user,passwd))
     except:
         print ('exception caused by: %s:%s:usmHMACSHAAuthProtocol:usmAesCfb128Protocol' % (user,passwd))
-        pass
 
 
 def snmp3_authSHA_privAES192(ip,user,passwd):
@@ -204,7 +200,6 @@ def snmp3_authSHA_privAES192(ip,user,passwd):
             print ("\nSNMPv3 Auth SHA Priv AES192: %s:%s:auth:usmHMACSHAAuthProtocol:priv:usmAesCfb192Protocol" % (user,passwd))
     except:
         print ('exception caused by: %s:%s:usmHMACSHAAuthProtocol:usmAesCfb192Protocol' % (user,passwd))
-        pass
 
 
 
@@ -230,7 +225,6 @@ def snmp3_authSHA_privAES256(ip,user,passwd):
             print ("\nSNMPv3 Auth SHA Priv AES256: %s:%s:auth:usmHMACSHAAuthProtocol:priv:usmAesCfb256Protocol" % (user,passwd))
     except:
         print ('exception caused by: %s:%s:usmHMACSHAAuthProtocol:usmAesCfb256Protocol' % (user,passwd))
-        pass
 
 
 
@@ -256,7 +250,6 @@ def snmp3_authSHA_privDES(ip,user,passwd):
             print ("\nSNMPv3 Auth SHA Priv DES: %s:%s:auth:usmHMACSHAAuthProtocol:priv:usmDESPrivProtocol" % (user,passwd))
     except:
         print ('exception caused by: %s:%s:usmHMACSHAAuthProtocol:usmDESPrivProtocol' % (user,passwd))
-        pass
 
 
 
@@ -282,7 +275,6 @@ def snmp3_authSHA_priv3DES(ip,user,passwd):
             print ("\nSNMPv3 Auth SHA Priv 3DES: %s:%s:auth:usmHMACSHAAuthProtocol:priv:usm3DESEDEPrivProtocol" % (user,passwd))
     except:
         print ('exception caused by: %s:%s:usmHMACSHAAuthProtocol:usm3DESEDEPrivProtocol' % (user,passwd))
-        pass
 
 
 
@@ -309,29 +301,16 @@ if __name__ == "__main__":
     inputfile, userfile, passfile, commfile = opts(sys.argv[1:])
 
     with open(inputfile, "r") as ins:
-        targs = []
-        for line in ins:
-            line = line.replace("\n", "")
-            targs.append(line)
+        targets = ins.read().splitlines()
 
     with open(userfile, "r") as ins:
-        users= []
-        for line in ins:
-            line = line.replace("\n", "")
-            users.append(line)
+        users= ins.read().splitlines()
 
     with open(passfile, "r") as ins:
-        passwords = []
-        for line in ins:
-            if (len(line) > 8):
-                line = line.replace("\n", "")
-                passwords.append(line)
+        passwords = [line for line in ins.read().splitlines() if len(line) > 8]
 
     with open(commfile, "r") as ins:
-        communities = []
-        for line in ins:
-            line = line.replace("\n", "")
-            communities.append(line)
+        communities = ins.read().splitlines()
 
     p = Pool(20)
     job1_args = [(ip, comm) for comm in communities for ip in targs]
