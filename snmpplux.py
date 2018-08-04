@@ -56,56 +56,56 @@ def opts(argv):
 
 
 def snmp1dict(ip, comm):
-        print('1', end='', flush=True)
-        errorIndication, errorStatus, errorIndex, varBinds = \
-            next(getCmd(SnmpEngine(),
-                        CommunityData(comm, mpModel=0),
-                        UdpTransportTarget((ip, 161)),
-                        ContextData(),
-                        ObjectType(ObjectIdentity('1.3.6.1.2.1.1.1.0'))
-            ))
-        if errorIndication:
-                pass
-        elif errorStatus:
-            pass
-        else:
-            print ("\nSNMPv1: %s: Community:%s" %(ip,comm))
+    print('1', end='', flush=True)
+    errorIndication, errorStatus, errorIndex, varBinds = \
+        next(getCmd(SnmpEngine(),
+                    CommunityData(comm, mpModel=0),
+                    UdpTransportTarget((ip, 161)),
+                    ContextData(),
+                    ObjectType(ObjectIdentity('1.3.6.1.2.1.1.1.0'))
+        ))
+    if errorIndication:
+        pass
+    elif errorStatus:
+        pass
+    else:
+        print ("\nSNMPv1: %s: Community:%s" %(ip,comm))
 
 
 
 def snmp2dict(ip, comm):
-        print('2', end='', flush=True)
-        errorIndication, errorStatus, errorIndex, varBinds = \
-            next(getCmd(SnmpEngine(),
-                        CommunityData(comm),
-                        UdpTransportTarget((ip, 161)),
-                        ContextData(),
-                        ObjectType(ObjectIdentity('1.3.6.1.2.1.1.1.0'))
-            ))
-        if errorIndication:
-                pass
-        elif errorStatus:
-            pass
-        else:
-            print ("\nSNMPv2: %s: Community:%s" %(ip,comm))
+    print('2', end='', flush=True)
+    errorIndication, errorStatus, errorIndex, varBinds = \
+        next(getCmd(SnmpEngine(),
+                    CommunityData(comm),
+                    UdpTransportTarget((ip, 161)),
+                    ContextData(),
+                    ObjectType(ObjectIdentity('1.3.6.1.2.1.1.1.0'))
+        ))
+    if errorIndication:
+        pass
+    elif errorStatus:
+        pass
+    else:
+        print ("\nSNMPv2: %s: Community:%s" %(ip,comm))
 
 
 
 def snmp3_authNone_privNone(ip, user):
-        print('3', end='', flush=True)
-        errorIndication, errorStatus, errorIndex, varBinds = \
-            next(getCmd(SnmpEngine(),
-                        UsmUserData(user),
-                        UdpTransportTarget((ip, 161)),
-                        ContextData(),
-                        ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0))
-            ))
-        if errorIndication:
-                pass
-        elif errorStatus:
-                pass
-        else:
-                print ("\nSNMPv3 Auth None Priv None: %s: %s - no pass required\n" %(ip, user))
+    print('3', end='', flush=True)
+    errorIndication, errorStatus, errorIndex, varBinds = \
+        next(getCmd(SnmpEngine(),
+                    UsmUserData(user),
+                    UdpTransportTarget((ip, 161)),
+                    ContextData(),
+                    ObjectType(ObjectIdentity('SNMPv2-MIB', 'sysDescr', 0))
+        ))
+    if errorIndication:
+        pass
+    elif errorStatus:
+        pass
+    else:
+        print ("\nSNMPv3 Auth None Priv None: %s: %s - no pass required\n" %(ip, user))
 
 
 
