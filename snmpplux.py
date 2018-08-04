@@ -29,13 +29,14 @@ def opts(argv):
     userfile = ''
     passfile = ''
     commfile = ''
+    modes = []
 
     def usage():
         print ('usage: test.py -i <inputfile> -u <userfile> -p <passfile> -c <communityfile>')
 
 
     try:
-        opts, args = getopt.getopt(argv, 'i:u:p:c:h', ['ifile=', 'ufile=','pfile=','cfile=','help'])
+        opts, args = getopt.getopt(argv, '123i:u:p:c:h', ['v1','v2','v3','ifile=', 'ufile=','pfile=','cfile=','help'])
     except getopt.GetoptError:
         usage()
         raise SystemExit(2)
@@ -43,6 +44,12 @@ def opts(argv):
         if opt == '-h':
             usage()
             raise SystemExit
+        elif opt in ('-1', '-v1'):
+            modes += [1]
+        elif opt in ('-2', '-v2'):
+            modes += [2]
+        elif opt in ('-3', '-v3'):
+            modes += [3]
         elif opt in ('-i', '--ifile'):
             inputfile = arg
         elif opt in ('-u', '--ufile'):
@@ -56,7 +63,7 @@ def opts(argv):
         usage()
         raise SystemExit(1)
 
-    return inputfile, userfile, passfile, commfile
+    return modes, inputfile, userfile, passfile, commfile
 
 
 
@@ -303,7 +310,7 @@ def snmp3shaaes_helper(args):
 
 if __name__ == "__main__":
     banner()
-    inputfile, userfile, passfile, commfile = opts(sys.argv[1:])
+    modes, inputfile, userfile, passfile, commfile = opts(sys.argv[1:])
 
     with open(inputfile, "r") as ins:
         targets = ins.read().splitlines()
@@ -318,11 +325,14 @@ if __name__ == "__main__":
         communities = ins.read().splitlines()
 
     p = Pool(20)
-    job1_args = [(ip, comm) for comm in communities for ip in targs]
-    p.map(snmp12_helper, job1_args)
-    job2_args = [(ip, user) for user in users for ip in targs]
-    p.map(snmp3none_helper, job1_args)
-    job3_args = [(ip, user, passwd) for ip in targs for user in users for passwd in passwords]
-    p.map(snmp3md5none_helper, job3_args)
-    job4_args = [(ip, user, passwd) for ip in targs for user in users for passwd in passwords] 
-    p.map(snmp3shaaes_helper, job4_args)
+
+    if 1 in modes or 2 in modes:
+        job1_args = [(ip, comm) for comm in communities for ip in targs]
+        p.map(snmp12_helper, job1_args)
+    if 3 in modes:
+        job2_args = [(ip, user) for user in users for ip in targs]
+        p.map(snmp3none_helper, job1_args)
+        job3_args = [(ip, user, passwd) for ip in targs for user in users for passwd in passwords]
+        p.map(snmp3md5none_helper, job3_args)
+        job4_args = [(ip, user, passwd) for ip in targs for user in users for passwd in passwords]
+        p.map(snmp3shaaes_helper, job4_args)
