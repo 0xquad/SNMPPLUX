@@ -9,17 +9,19 @@ from array import *
 from multiprocessing import Pool
 
 def banner():
-        print ('.')
-        print (' /   _____/ \      \    /     \\______    \______   \    |   |    |   \   \/  /')
-        print (' \_____  \  /   |   \  /  \ /  \|     ___/|     ___/    |   |    |   /\     / ')
-        print (' /        \/    |    \/    Y    \    |    |    |   |    |___|    |  / /     \ ')
-        print ('/_______  /\____|__  /\____|__  /____|    |____|   |_______ \______/ /___/\  \ ')
-        print ('        \/         \/         \/                           \/              \_/')
-        print (' ')
-        print ('Liam Romanis')
-        print ('version 0.4b - beta testing')
-        print ('http://www.pentura.com')
-        print ('.')
+    print(
+r""".
+ /   _____/ \      \    /     \______    \______   \    |   |    |   \   \/  /
+ \_____  \  /   |   \  /  \ /  \|     ___/|     ___/    |   |    |   /\     /
+ /        \/    |    \/    Y    \    |    |    |   |    |___|    |  / /     \
+/_______  /\____|__  /\____|__  /____|    |____|   |_______ \______/ /___/\  \
+        \/         \/         \/                           \/              \_/
+
+Liam Romanis
+version 0.4b - beta testing
+http://www.pentura.com
+."""
+)
 
 
 def opts(argv):
@@ -27,6 +29,7 @@ def opts(argv):
     userfile = ''
     passfile = ''
     commfile = ''
+
     try:
         opts, args = getopt.getopt(argv, 'i:u:p:c:h', ['ifile=', 'ufile=','pfile=','cfile=','help'])
     except getopt.GetoptError:
