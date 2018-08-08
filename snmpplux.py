@@ -2,7 +2,8 @@
 
 
 import re
-import sys, getopt
+import sys
+from optparse import OptionParser
 from pysnmp.hlapi import *
 import time
 from array import *
@@ -32,38 +33,47 @@ def opts(argv):
     modes = []
 
     def usage():
-        print ('usage: test.py -i <inputfile> -u <userfile> -p <passfile> -c <communityfile>')
+        print('''\
+usage: {0} -1 -C communityfile [-T targets-file | target1 [target2 ...]]
+       {0} -2 -C communityfile [-T targets-file | target1 [target2 ...]]
+       {0} -3 -U users-file -P pw-file [-T targets-file | target1 [target2 ...]]
+
+versions can be combined as long as the required additional args are present
+'''.format(sys.argv[0]))
 
 
-    try:
-        opts, args = getopt.getopt(argv, '123i:u:p:c:h', ['v1','v2','v3','ifile=', 'ufile=','pfile=','cfile=','help'])
-    except getopt.GetoptError:
+    parser = OptionParser()
+    parser.add_option('-1', '--v1', dest='scan_versions', action='append_const', const=1, default=[], help='scan for version 1 snmp service')
+    parser.add_option('-2', '--v2', dest='scan_versions', action='append_const', const=2, default=[], help='scan for version 2c snmp service')
+    parser.add_option('-3', '--v3', dest='scan_versions', action='append_const', const=3, default=[], help='scan for all auth modes of version 3 snmp service')
+    parser.add_option('-T', '--targets', nargs=1, dest='targets_file', default=None, help='target file')
+    parser.add_option('-U', '--usernames', nargs=1, dest='usernames_file', default=None, help='username file')
+    parser.add_option('-P', '--passwords', nargs=1, dest='passwords_file', default=None, help='password file')
+    parser.add_option('-C', '--communities', nargs=1, dest='communities_file', default=None, help='community file')
+    parser.add_option('-t', '--threads', nargs=1, dest='threads', default=20, type='int', action='store', help='number of probes in parallel')
+    options, targets = parser.parse_args()
+
+    if not options.targets_file and not targets:
         usage()
-        raise SystemExit(2)
-    for opt, arg in opts:
-        if opt == '-h':
-            usage()
-            raise SystemExit
-        elif opt in ('-1', '-v1'):
-            modes += [1]
-        elif opt in ('-2', '-v2'):
-            modes += [2]
-        elif opt in ('-3', '-v3'):
-            modes += [3]
-        elif opt in ('-i', '--ifile'):
-            inputfile = arg
-        elif opt in ('-u', '--ufile'):
-            userfile = arg
-        elif opt in ('-p', '--pfile'):
-            passfile = arg
-        elif opt in ('-c', '--cfile'):
-            commfile = arg
+        raise RuntimeError('must specify a target list either on command line or with -T')
 
-    if not inputfile or not userfile or not passfile or not commfile:
+    if not options.scan_versions:
         usage()
-        raise SystemExit(1)
+        raise RuntimeError('must specify at least one version to scan with -[123]')
 
-    return modes, inputfile, userfile, passfile, commfile
+    if 1 in options.scan_versions and not options.communities_file:
+        usage()
+        raise RuntimeError('versions 1 and 2 require a list of communities with -C')
+
+    if 3 in options.scan_versions and (not options.usernames_file or not options.passwords_file):
+        usage()
+        raise RuntimeError('version 3 requires a list of usernames and passwords with -U and -P')
+
+    if options.threads < 1:
+        usage()
+        raise RuntimeError('number of threads must be a positif integer')
+
+    return options, targets
 
 
 
@@ -290,8 +300,11 @@ def snmp3_authSHA_priv3DES(ip,user,passwd):
 
 
 
-def snmp12_helper(args):
-    return snmp1dict(*args), snmp2dict(*args)
+def snmp1_helper(args):
+    return snmp1dict(*args)
+
+def snmp2_helper(args):
+    return snmp2dict(*args)
 
 def snmp3none_helper(args):
     return snmp3_authNone_privNone(*args)
@@ -310,28 +323,32 @@ def snmp3shaaes_helper(args):
 
 if __name__ == "__main__":
     banner()
-    modes, inputfile, userfile, passfile, commfile = opts(sys.argv[1:])
+    options, targets = opts(None)
 
-    with open(inputfile, "r") as ins:
-        targets = ins.read().splitlines()
+    if options.targets_file:
+        with open(options.targets_file, "r") as ins:
+            targets += ins.read().splitlines()
 
-    with open(userfile, "r") as ins:
-        users= ins.read().splitlines()
+    p = Pool(options.threads)
 
-    with open(passfile, "r") as ins:
-        passwords = [line for line in ins.read().splitlines() if len(line) > 8]
+    if 1 in options.scan_versions or 2 in options.scan_versions:
+        with open(options.communities_file, "r") as ins:
+            communities = ins.read().splitlines()
 
-    with open(commfile, "r") as ins:
-        communities = ins.read().splitlines()
-
-    p = Pool(20)
-
-    if 1 in modes or 2 in modes:
         job1_args = [(ip, comm) for comm in communities for ip in targets]
-        p.map(snmp12_helper, job1_args)
-    if 3 in modes:
+        if 1 in options.scan_versions:
+            p.map(snmp1_helper, job1_args)
+        if 2 in options.scan_versions:
+            p.map(snmp2_helper, job1_args)
+    if 3 in options.scan_versions:
+        with open(options.usernames_file, "r") as ins:
+            users= ins.read().splitlines()
+
+        with open(options.passwords_file, "r") as ins:
+            passwords = [line for line in ins.read().splitlines() if len(line) > 8]
+
         job2_args = [(ip, user) for user in users for ip in targets]
-        p.map(snmp3none_helper, job1_args)
+        p.map(snmp3none_helper, job2_args)
         job3_args = [(ip, user, passwd) for ip in targets for user in users for passwd in passwords]
         p.map(snmp3md5none_helper, job3_args)
         job4_args = [(ip, user, passwd) for ip in targets for user in users for passwd in passwords]
